@@ -1,0 +1,340 @@
+
+{% extends "registration/base.html" %}
+
+{% load static %}
+
+{% block title %}Iniciar sesión - Guerci Construcciones{% endblock %}
+
+{% block content %}
+
+{% include 'registration/header.html' %}
+
+{% include 'registration/aside.html' %}
+
+
+
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section dashboard">
+    <div class="row">
+
+      <!-- Left side columns -->
+      <div class="col-lg-8">
+        <div class="row">
+
+          <!-- Sales Card -->
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card sales-card">
+
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filtro</h6>
+                    <li><a class="dropdown-item" href="#" onclick="cambiarPeriodo('hoy')">Hoy</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="cambiarPeriodo('mes')">Este mes</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="cambiarPeriodo('anual')">Este año</a></li>
+                  </ul>
+                </ul>
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">Facturación <span>| <span id="periodo">este mes</span></span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-currency-dollar"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6 id="total">{{ datos|floatformat:2 }}</h6>
+                    <span class="text-success small pt-1 fw-bold" id="ganancia">{{ porcentaje_aumento|floatformat:2 }} %</span>
+                    <span class="text-muted small pt-2 ps-1">anterior</span>
+                  </div>
+                  
+                  
+                </div>
+                
+              </div>
+
+            </div>
+          </div><!-- End Sales Card -->
+
+          <!-- Revenue Card -->
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card revenue-card">
+
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filtro</h6>
+                  </li>
+
+                  <li><a class="dropdown-item" href="#" onclick="estimadoPeriodo('hoy')">Hoy</a></li>
+                  <li><a class="dropdown-item" href="#" onclick="estimadoPeriodo('mes')">Este mes</a></li>
+                  <li><a class="dropdown-item" href="#" onclick="estimadoPeriodo('anual')">Este año</a></li>
+                </ul>
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">Estimado <span>|  <span id="estimado_periodo">este mes</span></span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-cart"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6 id="estimado_total">{{ estimado|floatformat:2 }}</h6>
+                    <span class="text-success small pt-1 fw-bold" id="estimado_ganancia">{{ porcentaje_estimado|floatformat:2 }}</span> <span class="text-muted small pt-2 ps-1">anterior</span>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div><!-- End Revenue Card -->
+
+          <!-- Customers Card -->
+          <div class="col-xxl-4 col-xl-12">
+
+            <div class="card info-card customers-card">
+
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filtro</h6>
+                  </li>
+
+                  <li><a class="dropdown-item" href="#" onclick="costoPeriodo('hoy')">Hoy</a></li>
+                  <li><a class="dropdown-item" href="#" onclick="costoPeriodo('mes')">Este mes</a></li>
+                  <li><a class="dropdown-item" href="#" onclick="costoPeriodo('anual')">Este año</a></li>
+                </ul>
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">Gastos <span>| <span id="gasto_periodo">este mes</span></span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6 id="gasto_total">{{ costo_total_mes|floatformat:2 }}</h6>
+                    <span class="text-danger small pt-1 fw-bold" id="gasto_ganancia">{{ porcentaje_costo|floatformat:2 }}</span> <span class="text-muted small pt-2 ps-1">compra</span>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div><!-- End Customers Card -->
+
+          <!-- Reports -->
+          <div class="col-12">
+          <div class="card">
+
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filtro</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Hoy</a></li>
+                <li><a class="dropdown-item" href="#">Este mes</a></li>
+                <li><a class="dropdown-item" href="#">Este año</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body">
+              <h5 class="card-title">Reporte <span>/Mensual</span></h5>
+
+              <!-- Line Chart -->
+              <div id="reportsChart"></div>
+              <div id="facturado" data-django-variable="{{ facturado_por_mes }}"></div>
+              <div id="estimado" data-django-variable="{{ estimado_por_mes }}"></div>
+              <div id="gasto_mat" data-django-variable="{{ gasto_materiales_por_mes }}"></div>
+              <div id="gasto_ser" data-django-variable="{{ gasto_servi_por_mes }}"></div>
+
+
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  var facturado = document.getElementById("facturado").getAttribute("data-django-variable");
+                  var estimado = document.getElementById("estimado").getAttribute("data-django-variable");
+                  var gasto_mat = document.getElementById("gasto_mat").getAttribute("data-django-variable");
+                  var gasto_ser = document.getElementById("gasto_ser").getAttribute("data-django-variable");
+
+                  var facturadoString = document.getElementById("facturado").getAttribute("data-django-variable");
+                  var facturado = facturadoString.split(',').map(Number);
+                  var estimadoString = document.getElementById("estimado").getAttribute("data-django-variable");
+                  var estimado = estimadoString.split(',').map(Number);
+                  var gasto_matString = document.getElementById("gasto_mat").getAttribute("data-django-variable");
+                  var gasto_mat = gasto_matString.split(',').map(Number);
+                  var gasto_serString = document.getElementById("gasto_ser").getAttribute("data-django-variable");
+                  var gasto_ser = gasto_serString.split(',').map(Number);
+
+                  /*console.log(facturado);
+                  console.log(estimado);
+                  console.log(gasto_mat);
+                  console.log(gasto_ser);
+                  console.log("El tipo de variable de facturado es: " + typeof gasto_mat);
+                  console.log("El tipo de variable de facturado es: " + typeof gasto_ser);*/
+                  // Combina los datos de gastos de materiales y servicios en una sola serie
+                  var combinedGastos = gasto_mat.map(function(value, index) {
+                    return [value, gasto_ser[index]];
+                  });
+                  // Formatea los datos en un objeto de serie
+                  var seriesData = [
+                    {
+                      name: 'Facturado',
+                      data: facturado,
+                    },{
+                      name: 'Estimado',
+                      data: estimado,  
+                    }, {
+                      name: 'Gastos (Materiales y Servicios)',
+                      data: combinedGastos,
+                    }
+                  ];
+                
+                  var nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+                  new ApexCharts(document.querySelector("#reportsChart"), {
+                    series: seriesData,
+                    chart: {
+                      height: 350,
+                      type: 'area',
+                      toolbar: {
+                        show: false
+                      },
+                    },
+                    markers: {
+                      size: 4
+                    },
+                    colors: ['#4154f1', '#2eca6a', '#ff771d'],
+                    fill: {
+                      type: "gradient",
+                      gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.3,
+                        opacityTo: 0.4,
+                        stops: [0, 90, 100]
+                      }
+                    },
+                    dataLabels: {
+                      enabled: false
+                    },
+                    stroke: {
+                      curve: 'smooth',
+                      width: 2
+                    },
+                    xaxis: {
+                      categories: nombresMeses,  // Usa los nombres de los meses como etiquetas en el eje X
+                    },
+                    tooltip: {
+                      x: {
+                        format: 'dd/MM/yy HH:mm'
+                      },
+                    }
+                  }).render();
+
+                });
+                </script>
+                
+              <!-- End Line Chart -->
+
+            </div>
+
+          </div>
+        </div><!-- End Reports -->
+
+
+    </div>
+  </section>
+
+</main><!-- End #main -->
+
+
+
+
+
+{% include 'registration/footer.html' %}
+
+<script>
+  function cambiarPeriodo(periodo) {
+    document.getElementById("periodo").textContent = periodo;
+  
+    // Realizar una solicitud AJAX para obtener los datos de facturación
+    fetch(`/obtener_facturacion/${periodo}/`)
+      .then(response => response.json())
+      .then(data => {
+        // Actualizar los valores en la página
+        console.log(data)
+        document.getElementById("total").textContent = data.total;
+        var ganancia = data.ganancia;  // Supongamos que data.ganancia es el número
+        // Formatear el número y agregar el símbolo de porcentaje
+        var gananciaFormateada = ganancia.toLocaleString() + " %";
+        // Establecer el contenido en el elemento HTML
+        document.getElementById("ganancia").textContent = gananciaFormateada
+        //document.getElementById("ganancia").textContent = data.ganancia;
+      })
+      .catch(error => console.error(error));
+  }
+
+  function estimadoPeriodo(periodo) {
+    document.getElementById("estimado_periodo").textContent = periodo;
+  
+    // Realizar una solicitud AJAX para obtener los datos de facturación
+    fetch(`/obtener_estimado/${periodo}/`)
+      .then(response => response.json())
+      .then(data => {
+        // Actualizar los valores en la página
+        console.log(data)
+        document.getElementById("estimado_total").textContent = data.estimado_total;
+        var ganancia = data.estimado_ganancia;  // Supongamos que data.ganancia es el número
+        // Formatear el número y agregar el símbolo de porcentaje
+        var gananciaFormateada = ganancia.toLocaleString() + " %";
+        // Establecer el contenido en el elemento HTML
+        document.getElementById("estimado_ganancia").textContent = gananciaFormateada
+        //document.getElementById("ganancia").textContent = data.ganancia;
+      })
+      .catch(error => console.error(error));
+  }
+
+  function costoPeriodo(periodo) {
+    document.getElementById("gasto_periodo").textContent = periodo;
+    // Realizar una solicitud AJAX para obtener los datos de facturación
+    fetch(`/obtener_gasto/${periodo}/`)
+      .then(response => response.json())
+      .then(data => {
+        // Actualizar los valores en la página
+        console.log(data)
+        document.getElementById("gasto_total").textContent = data.costo_total_actual;
+        var ganancia = data.costo_total_actual;  // Supongamos que data.ganancia es el número
+        // Formatear el número y agregar el símbolo de porcentaje
+        var gananciaFormateada = ganancia.toLocaleString() + " %";
+        // Establecer el contenido en el elemento HTML
+        document.getElementById("gasto_ganancia").textContent = gananciaFormateada
+        //document.getElementById("ganancia").textContent = data.ganancia;
+      })
+      .catch(error => console.error(error));
+  }
+  </script>
+
+
+
+{% endblock %}
+  
+  
